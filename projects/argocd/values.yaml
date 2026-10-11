@@ -1,0 +1,11 @@
+global:
+  domain: argocd.home.lan
+
+configs:
+  params:
+    server.insecure: true
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
