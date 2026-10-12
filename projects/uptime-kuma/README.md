@@ -4,6 +4,8 @@
 
 This project is part of my [Homelab](../../README.md). It was my first workload deployed without a Helm chart: I wrote each manifest myself to learn what a Deployment, PersistentVolumeClaim, Service and Ingress do and how they connect.
 
+I first deployed it by hand with `kubectl apply`. It is now managed by [Argo CD](../argocd/README.md), which deploys any change pushed to this folder.
+
 ---
 
 ## 📌 Overview
@@ -16,6 +18,7 @@ This project is part of my [Homelab](../../README.md). It was my first workload 
 | **App** | Uptime Kuma `2.5.6` (image `louislam/uptime-kuma:2`) |
 | **Ingress controller** | Traefik `3.7` (bundled with k3s) |
 | **Storage** | `local-path` StorageClass (bundled with k3s) |
+| **Deployed by** | Argo CD, automated sync from this folder on `main` |
 | **URL** | `http://kuma.home.lan` (lab network and tailnet only) |
 
 ---
@@ -43,7 +46,20 @@ Each object answers one question:
 
 ## 🚀 Deploying
 
-The namespace is created first, then every manifest in this folder is applied.
+### Making a change
+
+Argo CD watches this folder, so a change is deployed by pushing it. Nothing is applied by hand.
+
+1. Edit a manifest.
+2. Validate it against the live API without changing anything: `kubectl apply -f <file> --dry-run=server`
+3. Commit and push to `main`.
+4. Argo CD picks up the commit within about three minutes and syncs it.
+
+The first change made this way added resource requests and limits to the Deployment. It was running on the cluster about two minutes after the push, and the new pod came up with the same data.
+
+### First deployment
+
+Before Argo CD was installed, I created the namespace and applied every manifest in this folder directly. The same two commands would bring the app up on a cluster without Argo CD.
 
 ```bash
 kubectl create namespace uptime-kuma
@@ -71,6 +87,7 @@ curl -I -H "Host: kuma.home.lan" http://192.168.10.245/
 - **`ReadWriteOnce` on `local-path`.** The volume is a folder on one node's disk, so only that node can mount it. The claim stays `Pending` until a pod uses it, because the provisioner waits to learn which node to create the folder on.
 - **`ClusterIP` Service plus an Ingress, not a NodePort.** The app is exposed by hostname on the standard web ports through Traefik, so no per-app port has to be remembered.
 - **Its own namespace.** Everything for the app is grouped together and kept apart from system and monitoring workloads.
+- **Resource requests and a memory limit.** The container requests 50m of CPU and 128Mi of memory, which the scheduler reserves when placing the pod, and is limited to 512Mi of memory. It uses about 10m and 125Mi in normal running. There is no CPU limit, since exceeding one only throttles the container.
 
 ---
 
@@ -148,4 +165,6 @@ Each agent still had the control-plane node's old address saved. Updating `K3S_U
 - Why a PVC's spec is mostly immutable while a Deployment can be re-applied freely
 - How an ingress controller routes on the HTTP `Host` header, and how that differs from NAT
 - Using `kubectl explain`, `--dry-run=client -o yaml` and `--dry-run=server` to write and validate manifests
+- What resource requests and limits do, and how to size them from `kubectl top`
+- Moving a hand-deployed app under GitOps without restarting it
 - Reading k3s agent logs to diagnose a node that cannot reach its server
