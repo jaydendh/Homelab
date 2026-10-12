@@ -30,6 +30,7 @@ This lab is a hands-on environment for practicing **infrastructure, networking, 
 |---|---|
 | [hardware/](hardware/README.md) | The physical machines and what each one is used for |
 | [network/](network/README.md) | Subnets, OPNsense, DNS and Tailscale remote access |
+| [proxmox/](proxmox/README.md) | The hypervisor and its guests: [TrueNAS](proxmox/truenas/README.md) and [Jellyfin](proxmox/jellyfin/README.md) |
 | [kubernetes/apps/](kubernetes/apps) | One folder per app deployed on the cluster, with its manifests. Argo CD deploys from here |
 | [kubernetes/argocd/](kubernetes/argocd/README.md) | The Argo CD install and how it manages the apps |
 | [kubernetes/monitoring/](kubernetes/monitoring/README.md) | The Prometheus and Grafana stack: Helm values, components and what is scraped |
