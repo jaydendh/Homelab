@@ -11,11 +11,11 @@ This section is part of the [Homelab](../README.md). The machines themselves are
 ```mermaid
 flowchart TD
     I["Internet"] --> H["Home network<br/>192.168.1.0/24"]
-    H -->|"WAN"| O["OPNsense<br/>192.168.10.1<br/>firewall, NAT, DHCP, DNS"]
-    O -->|"LAN 192.168.10.0/24"| P["megatron<br/>Proxmox VE<br/>192.168.10.5"]
-    O --> N1["jayden1<br/>k3s control plane<br/>192.168.10.245"]
-    O --> N2["jayden2<br/>k3s worker<br/>192.168.10.81"]
-    O --> N3["jayden3<br/>k3s worker<br/>192.168.10.132"]
+    H -->|"WAN"| O["OPNsense<br/>firewall, NAT, DHCP, DNS"]
+    O -->|"LAN 192.168.10.0/24"| P["megatron<br/>Proxmox VE"]
+    O --> N1["jayden1<br/>k3s control plane"]
+    O --> N2["jayden2<br/>k3s worker"]
+    O --> N3["jayden3<br/>k3s worker"]
     T["Tailscale devices<br/>anywhere"] -.->|"subnet route to 192.168.10.0/24"| O
 ```
 
@@ -28,15 +28,17 @@ The lab sits behind the home network on its own subnet. OPNsense is the only pat
 | Network | Range | Gateway and DNS |
 |---|---|---|
 | Home | `192.168.1.0/24` | Home router |
-| Lab | `192.168.10.0/24` | OPNsense, `192.168.10.1` |
+| Lab | `192.168.10.0/24` | OPNsense |
 
-| Address | Host | Role |
-|---|---|---|
-| `192.168.10.1` | OPNsense | Firewall, router, DHCP, DNS, Tailscale subnet router |
-| `192.168.10.5` | `megatron` | Proxmox VE hypervisor |
-| `192.168.10.81` | `jayden2` | k3s worker |
-| `192.168.10.132` | `jayden3` | k3s worker |
-| `192.168.10.245` | `jayden1` | k3s control plane |
+| Host | Role |
+|---|---|
+| OPNsense | Firewall, router, DHCP, DNS, Tailscale subnet router |
+| `megatron` | Proxmox VE hypervisor |
+| `jayden1` | k3s control plane |
+| `jayden2` | k3s worker |
+| `jayden3` | k3s worker |
+
+Infrastructure hosts use fixed addresses on the lab subnet. Individual addresses are left out of this public repository.
 
 ---
 
@@ -46,7 +48,7 @@ OPNsense runs Unbound as the resolver for the lab. Two kinds of names matter.
 
 | Names | Resolved by | Points at |
 |---|---|---|
-| `*.home.lan` | Unbound wildcard host override | `192.168.10.245`, where Traefik listens |
+| `*.home.lan` | Unbound wildcard host override | The control-plane node, where Traefik listens |
 | Cluster-internal names, such as `monitoring-grafana.monitoring.svc.cluster.local` | CoreDNS inside the cluster | The Service's cluster IP |
 
 The wildcard means a new service needs no DNS change. Any hostname ending in `.home.lan` already reaches Traefik, and the Ingress for that hostname decides which app gets the request.
@@ -67,7 +69,7 @@ Tailscale gives encrypted access to the lab from any of my devices, with no port
 | Setting | Where | Effect |
 |---|---|---|
 | Subnet router advertising `192.168.10.0/24` | OPNsense | Tailnet devices can reach every lab address |
-| Split DNS: nameserver `192.168.10.1`, restricted to `home.lan` | Tailscale admin console | Tailnet devices send `.home.lan` lookups to OPNsense and everything else to their normal resolver |
+| Split DNS: OPNsense as the nameserver, restricted to `home.lan` | Tailscale admin console | Tailnet devices send `.home.lan` lookups to OPNsense and everything else to their normal resolver |
 
 On Windows, `nslookup` ignores the per-domain rule Tailscale installs and reports `.home.lan` names as missing. `ping` and browsers use the system resolver and work.
 
@@ -88,7 +90,7 @@ On Windows, `nslookup` ignores the per-domain rule Tailscale installs and report
 ```mermaid
 flowchart LR
     B["Browser<br/>kuma.home.lan"] -->|"1. DNS lookup"| U["Unbound<br/>on OPNsense"]
-    U -->|"192.168.10.245"| B
+    U -->|"node address"| B
     B -->|"2. HTTP request"| T["Traefik"]
     T -->|"3. match Host header<br/>to an Ingress"| S["Service"]
     S -->|"4. forward to a pod IP"| P["Pod"]

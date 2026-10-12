@@ -8,13 +8,13 @@ This is the inventory for the [Homelab](../README.md). The other sections descri
 
 ## 📋 Inventory
 
-| Host | Role | Model | CPU | RAM | Storage | IP |
-|---|---|---|---|---|---|---|
-| `jayden1` | k3s control plane | Dell OptiPlex 7040 | Intel Core i5-6500T, 4 cores, 2.5 GHz | 8 GB | 256 GB SATA SSD | `192.168.10.245` |
-| `jayden2` | k3s worker | Dell OptiPlex 7040 | Intel Core i5-6500T, 4 cores, 2.5 GHz | 8 GB | 256 GB SATA SSD | `192.168.10.81` |
-| `jayden3` | k3s worker | Dell OptiPlex 7040 | Intel Core i5-6500T, 4 cores, 2.5 GHz | 8 GB | 256 GB SATA SSD | `192.168.10.132` |
-| `megatron` | Proxmox VE hypervisor | _to be documented_ | | | | `192.168.10.5` |
-| OPNsense | Firewall, router, DHCP, DNS | _to be documented_ | | | | `192.168.10.1` |
+| Host | Role | Model | CPU | RAM | Storage |
+|---|---|---|---|---|---|
+| `jayden1` | k3s control plane | Dell OptiPlex 7040 | Intel Core i5-6500T, 4 cores, 2.5 GHz | 8 GB | 256 GB SATA SSD |
+| `jayden2` | k3s worker | Dell OptiPlex 7040 | Intel Core i5-6500T, 4 cores, 2.5 GHz | 8 GB | 256 GB SATA SSD |
+| `jayden3` | k3s worker | Dell OptiPlex 7040 | Intel Core i5-6500T, 4 cores, 2.5 GHz | 8 GB | 256 GB SATA SSD |
+| `megatron` | Proxmox VE hypervisor | _to be documented_ | | | |
+| OPNsense | Firewall, router, DHCP, DNS | _to be documented_ | | | |
 
 ---
 

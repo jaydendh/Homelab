@@ -61,7 +61,7 @@ The lab sits **behind** the primary/family network on a dedicated segment, enfor
 
 - **WAN:** OPNsense uplinks to the upstream network (double-NAT by design)
 - **LAN:** `192.168.10.0/24` — the isolated lab subnet
-- **Gateway / DNS:** OPNsense (`192.168.10.1`)
+- **Gateway / DNS:** OPNsense
 - **Addressing:** static assignments / DHCP reservations for infrastructure hosts
 - **Remote access:** Tailscale advertises the lab subnet, allowing secure access to any host from anywhere without exposing ports to the internet
 

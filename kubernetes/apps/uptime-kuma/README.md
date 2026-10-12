@@ -76,7 +76,7 @@ kubectl get endpointslices -n uptime-kuma   # should list the pod IP on port 300
 Routing can be tested before any DNS exists by sending the hostname by hand. A `302` to `/setup-database` on first run means Traefik matched the rule and reached the app:
 
 ```bash
-curl -I -H "Host: kuma.home.lan" http://192.168.10.245/
+curl -I -H "Host: kuma.home.lan" http://<node-ip>/
 ```
 
 ---
@@ -97,8 +97,8 @@ The hostname has to resolve to a node running Traefik. Two settings make that wo
 
 | Where | Setting | Effect |
 |---|---|---|
-| **OPNsense** (Unbound DNS, host override) | `*.home.lan` → `192.168.10.245` | Every `.home.lan` name points at Traefik; a new app only needs an Ingress |
-| **Tailscale** (split DNS) | Nameserver `192.168.10.1`, restricted to `home.lan` | Devices on the tailnet send `.home.lan` lookups to OPNsense |
+| **OPNsense** (Unbound DNS, host override) | `*.home.lan` → the control-plane node's address | Every `.home.lan` name points at Traefik; a new app only needs an Ingress |
+| **Tailscale** (split DNS) | OPNsense as the nameserver, restricted to `home.lan` | Devices on the tailnet send `.home.lan` lookups to OPNsense |
 
 `nslookup` on Windows bypasses the per-domain rule Tailscale installs and reports the name as missing. `ping kuma.home.lan` or a browser uses the normal resolver and works.
 
@@ -108,7 +108,7 @@ The hostname has to resolve to a node running Traefik. Two settings make that wo
 
 | Name | Type | Target | Interval |
 |---|---|---|---|
-| Grafana | HTTP | `http://192.168.10.245:32537/api/health` | 60s |
+| Grafana | HTTP | `http://<node-ip>:32537/api/health` | 60s |
 
 `/api/health` answers without a login and reports whether Grafana and its database are healthy. From inside the cluster the same check also works against the Service name, `http://monitoring-grafana.monitoring.svc.cluster.local/api/health`, which doesn't depend on a particular node being up.
 
@@ -123,7 +123,7 @@ Getting to a healthy cluster took some repair work first.
 **Both workers `NotReady` after the subnet migration.** The cluster had been moved to `192.168.10.0/24`, but the agents had not checked in for two months. The agent log showed the cause:
 
 ```
-Failed to validate connection to cluster at https://192.168.1.230:6443
+Failed to validate connection to cluster at https://<old-control-plane-ip>:6443
 ```
 
 Each agent still had the control-plane node's old address saved. Updating `K3S_URL` in `/etc/systemd/system/k3s-agent.service.env` on each worker and restarting the `k3s-agent` service brought both back to `Ready`.
