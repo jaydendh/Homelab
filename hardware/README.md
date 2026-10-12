@@ -13,8 +13,8 @@ This is the inventory for the [Homelab](../README.md). The other sections descri
 | `jayden1` | k3s control plane | Dell OptiPlex 7040 | Intel Core i5-6500T, 4 cores, 2.5 GHz | 8 GB | 256 GB SATA SSD |
 | `jayden2` | k3s worker | Dell OptiPlex 7040 | Intel Core i5-6500T, 4 cores, 2.5 GHz | 8 GB | 256 GB SATA SSD |
 | `jayden3` | k3s worker | Dell OptiPlex 7040 | Intel Core i5-6500T, 4 cores, 2.5 GHz | 8 GB | 256 GB SATA SSD |
-| `megatron` | Proxmox VE hypervisor | HP Pavilion desktop | _not recorded yet_ | 16 GB | 1 TB |
-| OPNsense | Firewall, router, DHCP, DNS | Dell OptiPlex 3020 | _not recorded yet_ | _not recorded yet_ | _not recorded yet_ |
+| `megatron` | Proxmox VE hypervisor | HP Pavilion desktop | AMD Ryzen 7, 5000 series | 16 GB | 1 TB |
+| OPNsense | Firewall, router, DHCP, DNS | Dell OptiPlex 3020 | Intel Core i3 | _not recorded yet_ | _not recorded yet_ |
 
 ---
 
@@ -62,6 +62,7 @@ The root filesystem is a 100 GiB logical volume inside that LVM partition. The i
 | | |
 |---|---|
 | **Model** | HP Pavilion desktop |
+| **CPU** | AMD Ryzen 7, 5000 series |
 | **Memory** | 16 GB |
 | **Storage** | 1 TB |
 
@@ -76,6 +77,7 @@ OPNsense runs on a dedicated machine, so the firewall stays up when the hypervis
 | | |
 |---|---|
 | **Model** | Dell OptiPlex 3020 |
+| **CPU** | Intel Core i3 |
 | **Role** | Edge firewall and router for the lab subnet, plus DHCP, DNS and the Tailscale subnet router |
 
 ---
