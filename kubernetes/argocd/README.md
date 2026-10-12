@@ -2,7 +2,7 @@
 
 > GitOps for my homelab: Argo CD installed with Helm, exposed through Traefik, and set to deploy Uptime Kuma automatically from this repository.
 
-This project is part of my [Homelab](../../README.md). It follows the [Uptime Kuma](../uptime-kuma/README.md) project, where I wrote the manifests by hand and applied them with `kubectl`. Here I handed that job to Argo CD, so a `git push` is now what deploys a change.
+This project is part of my [Homelab](../../README.md). It follows the [Uptime Kuma](../apps/uptime-kuma/README.md) project, where I wrote the manifests by hand and applied them with `kubectl`. Here I handed that job to Argo CD, so a `git push` is now what deploys a change.
 
 ---
 
@@ -17,7 +17,7 @@ This project is part of my [Homelab](../../README.md). It follows the [Uptime Ku
 | **Installed with** | Helm `v4.3.0`, chart `argo/argo-cd` `10.10.2` |
 | **Namespace** | `argocd` |
 | **URL** | `http://argocd.home.lan` (lab network and tailnet only) |
-| **Managing** | [projects/uptime-kuma](../uptime-kuma) |
+| **Managing** | [kubernetes/apps/uptime-kuma](../apps/uptime-kuma) |
 
 ---
 
@@ -106,7 +106,7 @@ REVISION  STATUS      CHART            DESCRIPTION
 2         deployed    argo-cd-10.10.2  Upgrade complete
 ```
 
-The hostname needed no DNS change, because OPNsense already resolves `*.home.lan` to the cluster (see the [DNS section](../uptime-kuma/README.md#-dns) of the Uptime Kuma project).
+The hostname needed no DNS change, because OPNsense already resolves `*.home.lan` to the cluster (see the [DNS section](../apps/uptime-kuma/README.md#-dns) of the Uptime Kuma project).
 
 ### 5. First login
 
@@ -136,7 +136,7 @@ spec:
   source:
     repoURL: https://github.com/jaydendh/Homelab.git
     targetRevision: main
-    path: projects/uptime-kuma
+    path: kubernetes/apps/uptime-kuma
   destination:
     server: https://kubernetes.default.svc
     namespace: uptime-kuma
@@ -203,7 +203,7 @@ The old pod was stopped before the new one started, because the Deployment uses 
 ## 🔭 Next Steps
 
 - [ ] TLS with cert-manager
-- [ ] Store the Application in Git, then replace it with an ApplicationSet that creates one Application per folder under `projects/`
+- [ ] Store the Application in Git, then replace it with an ApplicationSet that creates one Application per folder under `kubernetes/apps/`
 - [ ] Bring the monitoring stack under Argo CD
 - [ ] Remove the generated `argocd-initial-admin-secret`
 

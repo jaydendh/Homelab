@@ -2,9 +2,9 @@
 
 > A self-hosted uptime monitor deployed to my 3-node k3s cluster from hand-written Kubernetes manifests, reachable by hostname through Traefik with lab-wide DNS.
 
-This project is part of my [Homelab](../../README.md). It was my first workload deployed without a Helm chart: I wrote each manifest myself to learn what a Deployment, PersistentVolumeClaim, Service and Ingress do and how they connect.
+This project is part of my [Homelab](../../../README.md). It was my first workload deployed without a Helm chart: I wrote each manifest myself to learn what a Deployment, PersistentVolumeClaim, Service and Ingress do and how they connect.
 
-I first deployed it by hand with `kubectl apply`. It is now managed by [Argo CD](../argocd/README.md), which deploys any change pushed to this folder.
+I first deployed it by hand with `kubectl apply`. It is now managed by [Argo CD](../../argocd/README.md), which deploys any change pushed to this folder.
 
 ---
 
