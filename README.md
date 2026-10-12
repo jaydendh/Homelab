@@ -22,6 +22,17 @@ This lab is a hands-on environment for practicing **infrastructure, networking, 
 
 ---
 
+## 🗂️ Repository Layout
+
+| Folder | Contents |
+|---|---|
+| [hardware/](hardware/README.md) | The physical machines and what each one is used for |
+| [network/](network/README.md) | Subnets, OPNsense, DNS and Tailscale remote access |
+| [kubernetes/apps/](kubernetes/apps) | One folder per app deployed on the cluster, with its manifests. Argo CD deploys from here |
+| [kubernetes/argocd/](kubernetes/argocd/README.md) | The Argo CD install and how it manages the apps |
+
+---
+
 ## 🗺️ Architecture
 
 ![Home Lab Architecture](architecture.svg)
