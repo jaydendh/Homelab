@@ -65,6 +65,7 @@ The root filesystem is a 100 GiB logical volume inside that LVM partition. The i
 | **CPU** | AMD Ryzen 7, 5000 series |
 | **Memory** | 16 GB |
 | **Storage** | 1 TB |
+| **GPU** | NVIDIA GeForce GTX graphics card, used by the Jellyfin server for hardware video encoding |
 
 It has the most memory and disk of any machine in the lab, which is why the workloads that need both run here instead of on the cluster nodes.
 
