@@ -1,0 +1,22 @@
+# Overrides for the kube-prometheus-stack chart.
+# The Grafana admin password is not stored here. It is passed at install
+# time with --set grafana.adminPassword=<password>.
+
+grafana:
+  persistence:
+    enabled: true
+    size: 2Gi
+    storageClassName: local-path
+
+prometheus:
+  prometheusSpec:
+    retention: 15d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+          storageClassName: local-path

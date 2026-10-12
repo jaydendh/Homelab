@@ -32,6 +32,7 @@ This lab is a hands-on environment for practicing **infrastructure, networking, 
 | [network/](network/README.md) | Subnets, OPNsense, DNS and Tailscale remote access |
 | [kubernetes/apps/](kubernetes/apps) | One folder per app deployed on the cluster, with its manifests. Argo CD deploys from here |
 | [kubernetes/argocd/](kubernetes/argocd/README.md) | The Argo CD install and how it manages the apps |
+| [kubernetes/monitoring/](kubernetes/monitoring/README.md) | The Prometheus and Grafana stack: Helm values, components and what is scraped |
 
 ---
 
@@ -151,7 +152,7 @@ Each project below is deployed on this infrastructure. Some are documented in th
 | **Argo CD** | GitOps controller installed with Helm; deploys the apps in this repository automatically | [kubernetes/argocd](kubernetes/argocd/README.md) |
 | **Uptime Kuma** | Uptime monitoring deployed from hand-written manifests: Deployment, PVC, Service and Ingress | [kubernetes/apps/uptime-kuma](kubernetes/apps/uptime-kuma/README.md) |
 | **Media Automation Stack** | Containerized media pipeline (Sonarr, Radarr, Prowlarr, qBittorrent, Jellyseerr) on k3s with automated malware scanning (ClamAV) | _link_ |
-| **Monitoring Stack** | Prometheus + Grafana deployment, dashboards, and alert rules | _link_ |
+| **Monitoring Stack** | Prometheus + Grafana deployment, dashboards, and alert rules | [kubernetes/monitoring](kubernetes/monitoring/README.md) |
 | _more coming_ | | |
 
 > Each spoke repo links back here for full infrastructure context.
